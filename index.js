@@ -63,7 +63,7 @@ function downloadFontfacekit(fontname, fontfacekits_count_current, fontfacekits_
         readline.clearLine(process.stdout, 0)
         readline.cursorTo(process.stdout, 0)
         process.stdout.write('Downloading fontfacekit ' + fontfacekits_count_current + ' of ' + fontfacekits_count + ' ' + parseInt((100.0 * cur / len)) + '% ')
-      });
+      })
 
       resp.on('end', () => {
         resolve()
