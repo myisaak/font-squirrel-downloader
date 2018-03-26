@@ -26,7 +26,6 @@ function getData(){
     resp.on('end', () => {
       const fonts = JSON.parse(data)
       if(typeof fonts === 'object' && fonts.length > 0){
-        const fontfacekits_count = fonts.length
         processFonts(fonts)
       }
     })
@@ -38,7 +37,7 @@ function getData(){
 
 async function processFonts(fonts){
   const fontfacekits_count = fonts.length
-  for(i = 0; i < fonts.length; i++) {
+  for(i = 0; i < fontfacekits_count; i++) {
     const fontfacekit = fonts[i]
     const fontfacekits_count_current = i + 1
     await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
