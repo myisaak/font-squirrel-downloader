@@ -1,6 +1,6 @@
 {
   "name": "font-squirrel-downloader",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "downloads all fonts from fontsquirrel.com",
   "main": "index.js",
   "scripts": {
