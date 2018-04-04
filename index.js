@@ -5,7 +5,7 @@ const pkg = require('./package.json')
 const API_ENDPOINT = 'https://www.fontsquirrel.com/api/fontlist/all'
 const FONTFACEKIT_DOWNLOAD = 'https://www.fontsquirrel.com/fontfacekit/'
 
-console.log(pkg.name + " " + pkg.version)
+console.log(pkg.name + ' ' + pkg.version)
 
 getData()
 
