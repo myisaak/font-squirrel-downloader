@@ -6,4 +6,9 @@ This is a Node.js port of my FontSquirrelDownloader in [Plain of JARs](https://g
 
 ## Installation
 
-`npm i -g font-squirrel-downloader`
+`npm i -g danielruf/font-squirrel-downloader`  
+`yarn global add danielruf/font-squirrel-downloader`
+
+## Usage
+
+`font-squirrel-downloader`
