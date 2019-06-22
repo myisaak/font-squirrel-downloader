@@ -35,10 +35,31 @@ async function processFonts(fonts){
   for(let i = 0; i < fontfacekits_count; i++) {
     const fontfacekit = fonts[i]
     const fontfacekits_count_current = i + 1
-    await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
+    const alreadyDownloaded = await checkForDownloadedFontfacekit(fontfacekit.family_urlname)
+    if(!alreadyDownloaded) {
+      await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
+    }
   }
   console.log('')
   console.log('Done.')
+}
+
+function checkForDownloadedFontfacekit(fontname){
+  return new Promise((resolve) => {
+    const options = {method: 'HEAD', host: 'www.fontsquirrel.com', port: 443, path: '/fontfacekit/' + fontname};
+    const filePath = fontname + '-fontfacekit.zip'
+    const req = https.request(options, function(res) {
+      const contentLength = parseInt(res.headers['content-length'])
+      if(fs.existsSync(filePath)) {
+        const fileStats = fs.statSync(filePath)
+        if (fileStats.size === contentLength) {
+          resolve(true)
+        }
+      }
+      resolve(false)
+    });
+    req.end();
+  })
 }
 
 function downloadFontfacekit(fontname, fontfacekits_count_current, fontfacekits_count){
