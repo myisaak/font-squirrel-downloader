@@ -37,7 +37,12 @@ async function processFonts(fonts){
     const fontfacekits_count_current = i + 1
     const alreadyDownloaded = await checkForDownloadedFontfacekit(fontfacekit.family_urlname)
     if(!alreadyDownloaded) {
+      try {
       await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
+      } catch (error) {
+        console.log('')
+        console.log('Error: ' + error.message)
+      }
     }
   }
   console.log('')
@@ -86,10 +91,7 @@ function downloadFontfacekit(fontname, fontfacekits_count_current, fontfacekits_
         file.close()
         resolve()
       })
-
   }).on('error', (err) => {
-      console.log('')
-      console.log('Error: ' + err.message)
       reject(err)
     })
   })
