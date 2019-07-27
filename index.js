@@ -1,13 +1,28 @@
 const https = require('https')
 const readline = require('readline')
 const fs = require('fs')
+const path = require('path')
 const pkg = require('./package.json')
+
+const {options, optionkeys} = require('./utils/process-argv')
 const API_ENDPOINT = 'https://www.fontsquirrel.com/api/fontlist/all'
 const FONTFACEKIT_DOWNLOAD = 'https://www.fontsquirrel.com/fontfacekit/'
 
 console.log(pkg.name + ' ' + pkg.version)
 
-var stream;
+let stream;
+
+let downloadDirectory = './'
+if (optionkeys.includes('--dir')) {
+  const resolvedPath = path.resolve(options['--dir'])
+  if (
+    fs.existsSync(resolvedPath) &&
+    fs.lstatSync(resolvedPath).isDirectory()
+  ) {
+    downloadDirectory = resolvedPath
+  }
+}
+
 getData()
 
 function getData(){
@@ -38,7 +53,7 @@ async function processFonts(fonts){
     const alreadyDownloaded = await checkForDownloadedFontfacekit(fontfacekit.family_urlname)
     if(!alreadyDownloaded) {
       try {
-      await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
+        await downloadFontfacekit(fontfacekit.family_urlname, fontfacekits_count_current, fontfacekits_count)
       } catch (error) {
         console.log('')
         console.log('Error: ' + error.message)
@@ -75,7 +90,7 @@ function downloadFontfacekit(fontname, fontfacekits_count_current, fontfacekits_
 
       const len = parseInt(resp.headers['content-length'], 10)
       const fontfacekit_filename = fontname+'-fontfacekit.zip'
-      const file = fs.createWriteStream('./' + fontfacekit_filename)
+      const file = fs.createWriteStream(path.join(downloadDirectory, fontfacekit_filename))
       stream = file
 
       resp.on('data', (chunk) => {

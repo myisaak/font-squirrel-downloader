@@ -1,15 +1,55 @@
 const fs = require('fs');
 const childProcess = require('child_process');
 
-const cliProcess = childProcess.spawn('node', ['bin/font-squirrel-downloader']);
+(async () => {
+    await testDownload();
+    await testDownloadCustomDirectory();
+})();
 
-setTimeout(function(){
-    cliProcess.kill('SIGTERM');
-}, 10000);
+async function testDownload() {
+    return new Promise((resolve) => {
+        const cliProcess = childProcess.spawn('node', ['bin/font-squirrel-downloader']);
 
-cliProcess.on('close', () => {
-    const files = fs.readdirSync('.');
-    files.some(file => /.+-fontfacekit\.zip/.test(file))
-        ? process.exit(0)
-        : process.exit(1);
-  });
+        setTimeout(function(){
+            cliProcess.kill('SIGTERM');
+        }, 10000);
+
+        cliProcess.on('close', () => {
+            const files = fs.readdirSync('.');
+            if (files.some(file => /.+-fontfacekit\.zip/.test(file))) {
+                resolve();
+            } else {
+                process.exit(1)
+            }
+        });
+    });
+}
+
+async function testDownloadCustomDirectory() {
+    const downloadDir = 'fonts';
+    if (
+        !fs.existsSync(downloadDir) ||
+        (
+            fs.existsSync(downloadDir) &&
+            !fs.lstatSync(downloadDir).isDirectory()
+        )
+    ) {
+        fs.mkdirSync(downloadDir);
+    }
+    return new Promise((resolve) => {
+        const cliProcess = childProcess.spawn('node', ['bin/font-squirrel-downloader', '--dir', downloadDir]);
+
+        setTimeout(function(){
+            cliProcess.kill('SIGTERM');
+        }, 10000);
+
+        cliProcess.on('close', () => {
+            const files = fs.readdirSync(downloadDir);
+            if (files.some(file => /.+-fontfacekit\.zip/.test(file))) {
+                resolve();
+            } else {
+                process.exit(1)
+            }
+        });
+    });
+}
