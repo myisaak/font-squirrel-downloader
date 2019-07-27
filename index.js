@@ -54,7 +54,7 @@ function checkForDownloadedFontfacekit(fontname){
     const options = {method: 'HEAD', host: 'www.fontsquirrel.com', port: 443, path: '/fontfacekit/' + fontname};
     const filePath = fontname + '-fontfacekit.zip'
     const req = https.request(options, function(res) {
-      const contentLength = parseInt(res.headers['content-length'])
+      const contentLength = parseInt(res.headers['content-length'], 10)
       if(fs.existsSync(filePath)) {
         const fileStats = fs.statSync(filePath)
         if (fileStats.size === contentLength) {
