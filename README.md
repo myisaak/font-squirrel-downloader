@@ -15,3 +15,10 @@ npm i -g danielruf/font-squirrel-downloader
 ## Usage
 
 `font-squirrel-downloader`
+
+### custom directory
+
+You can set a custom directory for the downloads since v1.2.0.
+The directory can be relative or absolute.
+
+`font-squirrel-downloader --dir fonts`
