@@ -16,7 +16,7 @@ async function testDownload() {
 
         cliProcess.on('close', () => {
             const files = fs.readdirSync('.');
-            if (files.some(file => /.+-fontfacekit\.zip/.test(file))) {
+            if (files.some(file => file.endsWith('-fontfacekit.zip'))) {
                 resolve();
             } else {
                 process.exit(1)
@@ -45,7 +45,7 @@ async function testDownloadCustomDirectory() {
 
         cliProcess.on('close', () => {
             const files = fs.readdirSync(downloadDir);
-            if (files.some(file => /.+-fontfacekit\.zip/.test(file))) {
+            if (files.some(file => file.endsWith('-fontfacekit.zip'))) {
                 resolve();
             } else {
                 process.exit(1)
