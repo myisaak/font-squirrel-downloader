@@ -20,6 +20,8 @@ if (optionkeys.includes('--dir')) {
     fs.lstatSync(resolvedPath).isDirectory()
   ) {
     downloadDirectory = resolvedPath
+  } else {
+    console.log(`Warning, directory ${resolvedPath} does not exist. Falling back to the current directory`);
   }
 }
 
